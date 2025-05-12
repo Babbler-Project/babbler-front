@@ -1,26 +1,15 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { CalendarView } from "./features/calendar/components/CalendarView";
 
 function App() {
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-primary">Hello world!</CardTitle>
-            <CardDescription>This is babbler front app.</CardDescription>
-          </CardHeader>
-          <CardFooter className="flex justify-between">
-            <Button variant="outline">Cancel</Button>
-            <Button>Submit</Button>
-          </CardFooter>
-        </Card>
+    <div className="min-h-screen bg-background flex flex-col p-4">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold">Talk schedule</h1>
+        <p className="text-muted-foreground">View technical talk schedules.</p>
+      </header>
+
+      <div className="flex-1">
+        <CalendarView className="max-h-[calc(100vh-8rem)]" />
       </div>
     </div>
   );
