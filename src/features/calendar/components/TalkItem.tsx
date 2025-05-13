@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/tooltip";
 import { levelColors, levelBorderColors } from "../mapper";
 import { MapPin, Tag, Clock, User } from "lucide-react";
-import type { Talk } from "../types";
 import { useTalkDisplay } from "../hooks/useTalkDisplay";
 import { formatEventTime, formatTimeRange } from "../utils";
+import type { Talk } from "@/types/domain/Talk";
 
 interface TalkItemProps {
   talk: Talk;
