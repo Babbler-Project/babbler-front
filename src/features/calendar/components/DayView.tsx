@@ -2,6 +2,8 @@ import { useMemo } from "react";
 import { generateTimeSlots } from "../utils";
 import { mapDayTalks } from "../mapper";
 import { TalkItem } from "./TalkItem";
+import { LunchBreakSlot } from "./LunchBreakSlot";
+import { cn } from "@/lib/utils";
 import type { Talk } from "../types";
 
 interface DayViewProps {
@@ -41,12 +43,15 @@ export function DayView({ currentDate, talks }: DayViewProps) {
       <div className="flex flex-1 overflow-auto">
         {/* Time slots */}
         <div className="border-r w-16 shrink-0">
-          {timeSlots.map((time, idx) => (
+          {timeSlots.map((slot, idx) => (
             <div
               key={idx}
-              className="border-b h-30 p-1 text-xs text-right text-muted-foreground pr-2"
+              className={cn(
+                "border-b h-30 p-1 text-xs text-right pr-2",
+                !slot.isBreakTime && "text-muted-foreground",
+              )}
             >
-              {time}
+              {slot.time}
             </div>
           ))}
         </div>
@@ -54,9 +59,13 @@ export function DayView({ currentDate, talks }: DayViewProps) {
         {/* Day content */}
         <div className="flex-1 relative">
           {/* Time slots background */}
-          {timeSlots.map((_, idx) => (
-            <div key={idx} className="border-b h-30"></div>
-          ))}
+          {timeSlots.map((slot, idx) =>
+            slot.isBreakTime ? (
+              <LunchBreakSlot key={idx} />
+            ) : (
+              <div key={idx} className="border-b h-30"></div>
+            ),
+          )}
 
           {/* Talks */}
           <div className="absolute inset-0">

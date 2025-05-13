@@ -23,3 +23,8 @@ export interface PositionedTalk extends Talk {
 
 export type CalendarViewType = "day" | "week";
 export type Room = "Room A" | "Room B" | "Room C" | "Room D" | "Room E";
+
+export interface TimeSlot {
+  time: string;
+  isBreakTime?: boolean;
+}
