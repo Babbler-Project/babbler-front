@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import OrganizerRouter from "./features/organizer/OrganizerRouter";
-import SpeakerRouter from "./features/speaker/SpeakerRouter";
+import SpeakerRouter from "./features/speaker/components/SpeakerRouter";
 
 function App() {
   return (
