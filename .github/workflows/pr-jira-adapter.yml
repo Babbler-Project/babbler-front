@@ -2,9 +2,8 @@ name: Update PR Description with JIRA ID
 
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened]
 
-# Add this permissions block
 permissions:
   pull-requests: write
   contents: read
