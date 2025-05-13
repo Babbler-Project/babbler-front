@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { addDays, subDays, addWeeks, subWeeks } from "date-fns";
-import type { CalendarViewType, Talk } from "../types";
+import type { CalendarViewType } from "../types";
 import mockTalks from "../data/mock-talks.json";
+import type { Talk } from "@/types/domain/Talk";
 
 export function useCalendar() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
