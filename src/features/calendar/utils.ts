@@ -7,6 +7,10 @@ import {
 } from "date-fns";
 import type { Talk } from "../types";
 
+export const LUNCH_BREAK_START_HOUR = 12;
+export const LUNCH_BREAK_END_HOUR = 13;
+export const LUNCH_BREAK_LABEL = "Lunch break";
+
 // Format date to display in header
 export const formatDate = (date: Date): string => {
   return format(date, "MMMM d, yyyy");
@@ -26,10 +30,13 @@ export const formatDay = (date: Date): string => {
 };
 
 // Generate time slots for the calendar - Use smaller increments for finer granularity
-export const generateTimeSlots = (): string[] => {
-  const slots: string[] = [];
+export const generateTimeSlots = (): TimeSlot[] => {
+  const slots: TimeSlot[] = [];
   for (let i = 9; i < 19; i++) {
-    slots.push(`${i}:00`);
+    slots.push({
+      time: `${i}:00`,
+      isBreakTime: i >= LUNCH_BREAK_START_HOUR && i < LUNCH_BREAK_END_HOUR,
+    });
   }
   return slots;
 };
