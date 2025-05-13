@@ -8,8 +8,13 @@ import { TalkSubmissionSuccess } from "./TalkSubmissionSuccess";
 import { BasicInfoSection } from "./BasicInfoSection";
 import { TechnicalDetailsSection } from "./TechnicalDetailsSection";
 import { ReviewSection } from "./ReviewSection";
+import { cn } from "@/lib/utils";
 
-export default function TalkSubmissionForm() {
+export default function TalkSubmissionForm({
+  className,
+}: {
+  className?: string;
+}) {
   const { form, isSubmitting, submitSuccess, onSubmit } = useTalkSubmission();
 
   const stepper = useAccordionStepper({
@@ -39,7 +44,10 @@ export default function TalkSubmissionForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={cn("space-y-8", className)}
+      >
         <AccordionStepper
           openSection={stepper.openSection}
           sections={stepper.sections}

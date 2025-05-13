@@ -16,18 +16,14 @@ export const SPEAKER_NAV_ITEMS: MenuItem[] = [
     title: "Talks",
     url: "/speaker/talks",
     icon: MessageSquare,
-    // submenu: [
-    //   {
-    //     title: "Submit a Talk",
-    //     url: "/speaker/submit-talk",
-    //     description: "Submit a new talk proposal",
-    //   },
-    //   {
-    //     title: "My Talks",
-    //     url: "/speaker/my-talks",
-    //     description: "View and manage your submitted talks",
-    //   },
-    // ],
+    submenu: [
+      {
+        title: "Submit a talk",
+        url: "/speaker/talks/submit",
+        description: "Fill out the form below to submit your talk proposal.",
+        hidden: true,
+      },
+    ],
   },
   {
     title: "Schedule",
