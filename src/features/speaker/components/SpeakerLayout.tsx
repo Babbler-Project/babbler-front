@@ -1,6 +1,6 @@
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { SpeakerSidebar } from "./SpeakerSidebar";
-import { SpeakerHeader } from "./SpeakerHeader";
+import { AppLayout } from "@/components/shared/navigation/app-layout";
+import { SPEAKER_NAV_ITEMS } from "../constants/navigation";
+import SpeakerQuickAction from "./SpeakerQuickAction";
 
 export default function SpeakerLayout({
   children,
@@ -8,12 +8,12 @@ export default function SpeakerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <SpeakerSidebar />
-      <div className="flex min-h-screen w-full flex-col">
-        <SpeakerHeader />
-        <main className="flex-1 p-4 md:p-6">{children}</main>
-      </div>
-    </SidebarProvider>
+    <AppLayout
+      navItems={SPEAKER_NAV_ITEMS}
+      basePath="/speaker"
+      quickAction={<SpeakerQuickAction />}
+    >
+      {children}
+    </AppLayout>
   );
 }

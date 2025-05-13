@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 const fakeUser = {
   name: "John Doe",
   email: "john.doe@example.com",
-  role: "Speaker",
+  role: "Role",
   avatarUrl: "https://api.dicebear.com/7.x/initials/svg?seed=JD",
 };
 
