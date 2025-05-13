@@ -1,10 +1,4 @@
-import {
-  LayoutDashboard,
-  MessageSquare,
-  Calendar,
-  Users,
-  Settings,
-} from "lucide-react";
+import { LayoutDashboard, Users, Settings } from "lucide-react";
 import type { MenuItem } from "@/types/menuItem";
 
 export const ORGANIZER_NAV_ITEMS: MenuItem[] = [

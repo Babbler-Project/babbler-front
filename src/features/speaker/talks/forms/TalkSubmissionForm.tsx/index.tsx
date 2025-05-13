@@ -4,7 +4,7 @@ import { AccordionStepper } from "@/components/ui/accordion-stepper";
 import { useAccordionStepper } from "@/hooks/useAccordionStepper";
 import { SECTION_IDS, TALK_SUBMISSION_SECTIONS } from "./constants";
 import type { TalkFormSectionId } from "./constants";
-import { TalkSubmissionSuccess } from "./TalkSubmissionSuccess";
+import type { TalkSubmissionSuccess } from "./TalkSubmissionSuccess";
 import { BasicInfoSection } from "./BasicInfoSection";
 import { TechnicalDetailsSection } from "./TechnicalDetailsSection";
 import { ReviewSection } from "./ReviewSection";
