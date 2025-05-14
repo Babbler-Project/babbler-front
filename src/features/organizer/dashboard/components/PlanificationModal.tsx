@@ -31,6 +31,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import type { Talk } from "@/types/domain/Talk";
+import { MAX_TIME, MIN_TIME } from "../../constants/time";
 
 interface PlanificationModalProps {
   talk: Talk | null;
@@ -124,13 +125,13 @@ const PlanificationModal = ({
               <span className="font-medium">Speaker:</span>
               <span>{talk.speaker}</span>
               <Badge variant="outline" className="ml-2">
-                {talk.duration} min
+                {talk.durationDisplay}
               </Badge>
               <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
                 {talk.level}
               </Badge>
               <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
-                {talk.category}
+                {talk.type}
               </Badge>
             </div>
 
@@ -192,8 +193,8 @@ const PlanificationModal = ({
                     id="startTime"
                     className="w-24"
                     type="time"
-                    min={"09:00"}
-                    max={"19:00"}
+                    min={MIN_TIME}
+                    max={MAX_TIME}
                     step={1800}
                     value={startTime ? format(startTime, "HH:mm") : ""}
                     onChange={(e) => {

@@ -1,26 +1,18 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { CalendarView } from "@/features/calendar/components/CalendarView";
-import mockTalks from "../data/mock-pending-talks.json";
-import { useState } from "react";
 import PlanificationModal from "./PlanificationModal";
-import type { Room, Talk, TalkLevel, TalkStatus } from "@/types/domain/Talk";
-import { TALK_STATUS } from "@/utils/talkStatus";
 import PendingTalkList from "./PendingTalkList";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGetPendingTalks } from "@/features/talks/hooks/queries/useGetPendingTalks";
+import { toast } from "sonner";
+import type { Talk } from "@/types/domain/Talk";
 
 const OrganizerDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTalk, setSelectedTalk] = useState<Talk | null>(null);
 
-  const [pendingTalks, setPendingTalks] = useState(
-    mockTalks
-      .filter((talk) => talk.status === TALK_STATUS.PENDING)
-      .map((talk) => ({
-        ...talk,
-        level: talk.level as TalkLevel,
-        room: talk.room ? (talk.room as Room) : null,
-        status: talk.status as TalkStatus,
-      })),
-  );
+  const { data: pendingTalks, isLoading, error } = useGetPendingTalks();
 
   const handleOpenModal = (talk: Talk) => {
     setSelectedTalk(talk);
@@ -32,24 +24,21 @@ const OrganizerDashboard = () => {
     setSelectedTalk(null);
   };
 
-  const handleScheduleTalk = () => {
-    // Here you would typically update the talk status to SCHEDULED
+  const handleScheduleTalk = (
+    talk: Talk,
+    room: string,
+    date: Date,
+    startTime: Date,
+  ) => {
+    toast.success("Talk scheduled successfully", {
+      description: `${talk.title} has been scheduled in ${room} at ${startTime.toLocaleTimeString()}`,
+    });
     handleCloseModal();
   };
 
   const handleRejectTalk = (talkId: string) => {
-    setPendingTalks((prevTalks) =>
-      prevTalks
-        .map((talk) =>
-          talk.id === talkId
-            ? {
-                ...talk,
-                status: TALK_STATUS.REJECTED,
-              }
-            : talk,
-        )
-        .filter((talk) => talk.status === TALK_STATUS.PENDING),
-    );
+    console.log("Rejecting talk with ID:", talkId);
+    // API call would go here
   };
 
   return (
@@ -59,12 +48,25 @@ const OrganizerDashboard = () => {
           <CalendarView className="h-full" />
         </Card>
         <Card className="col-span-1 p-4 flex flex-col gap-4 h-[calc(100vh-7rem)]">
-          <PendingTalkList
-            talks={pendingTalks}
-            onAccept={handleOpenModal}
-            onReject={handleRejectTalk}
-            className="flex-1 flex flex-col max-h-full"
-          />
+          {isLoading ? (
+            <div className="flex-1 flex flex-col gap-3">
+              <Skeleton className="h-6 w-1/3" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full" />
+            </div>
+          ) : error ? (
+            <div className="flex-1 text-red-500 flex items-center justify-center">
+              Failed to load pending talks
+            </div>
+          ) : (
+            <PendingTalkList
+              talks={pendingTalks || []}
+              onAccept={handleOpenModal}
+              onReject={handleRejectTalk}
+              className="flex-1 flex flex-col max-h-full"
+            />
+          )}
         </Card>
       </div>
 
