@@ -6,7 +6,7 @@ import { Check, X } from "lucide-react";
 interface PendingTalkListProps {
   talks: Talk[];
   onAccept: (talk: Talk) => void;
-  onReject: (talkId: string) => void;
+  onReject: (talk: Talk) => void;
   className?: string;
 }
 
@@ -55,6 +55,7 @@ const PendingTalkList = ({
                     </span>
                   </div>
                 </div>
+
                 <div className="flex gap-2 mt-2">
                   <Button
                     size="sm"
@@ -68,7 +69,7 @@ const PendingTalkList = ({
                     size="sm"
                     variant="outline"
                     className="flex-1 bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
-                    onClick={() => onReject(talk.id)}
+                    onClick={() => onReject(talk)}
                   >
                     <X size={16} className="mr-1" /> Reject
                   </Button>

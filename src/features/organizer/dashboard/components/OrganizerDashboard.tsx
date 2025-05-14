@@ -2,30 +2,37 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { CalendarView } from "@/features/calendar/components/CalendarView";
 import PlanificationModal from "./PlanificationModal";
+import RejectTalkModal from "./RejectTalkModal";
 import PendingTalkList from "./PendingTalkList";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetPendingTalks } from "@/features/talks/hooks/queries/useGetPendingTalks";
 import type { Talk } from "@/features/talks/types";
 
 const OrganizerDashboard = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
+  const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [selectedTalk, setSelectedTalk] = useState<Talk | null>(null);
 
   const { data: pendingTalks, isLoading, error } = useGetPendingTalks();
 
-  const handleOpenModal = (talk: Talk) => {
+  const handleOpenPlanModal = (talk: Talk) => {
     setSelectedTalk(talk);
-    setIsModalOpen(true);
+    setIsPlanModalOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+  const handleOpenRejectModal = (talk: Talk) => {
+    setSelectedTalk(talk);
+    setIsRejectModalOpen(true);
+  };
+
+  const handleClosePlanModal = () => {
+    setIsPlanModalOpen(false);
     setSelectedTalk(null);
   };
 
-  const handleRejectTalk = (talkId: string) => {
-    console.log("Rejecting talk with ID:", talkId);
-    // API call would go here
+  const handleCloseRejectModal = () => {
+    setIsRejectModalOpen(false);
+    setSelectedTalk(null);
   };
 
   return (
@@ -49,8 +56,8 @@ const OrganizerDashboard = () => {
           ) : (
             <PendingTalkList
               talks={pendingTalks || []}
-              onAccept={handleOpenModal}
-              onReject={handleRejectTalk}
+              onAccept={handleOpenPlanModal}
+              onReject={handleOpenRejectModal}
               className="flex-1 flex flex-col max-h-full"
             />
           )}
@@ -59,8 +66,14 @@ const OrganizerDashboard = () => {
 
       <PlanificationModal
         talk={selectedTalk}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isPlanModalOpen}
+        onClose={handleClosePlanModal}
+      />
+
+      <RejectTalkModal
+        talk={selectedTalk}
+        isOpen={isRejectModalOpen}
+        onClose={handleCloseRejectModal}
       />
     </div>
   );
