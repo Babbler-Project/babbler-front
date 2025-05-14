@@ -20,41 +20,69 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Clock, Tag, Users } from "lucide-react";
+import { Clock, Loader2, Tag, Users } from "lucide-react";
 import type { UseFormReturn } from "react-hook-form";
-import { CATEGORIES, EXPERIENCE_LEVELS } from "./constants";
 import type { TalkSubmissionFormValues } from "../../schemas/talkSubmissionSchema";
+import { useTalkTypes } from "../../../talks/talkTypes/hooks/queries/useGetTypes";
+import { LEVEL_OPTIONS } from "./constants";
 
 interface TechnicalDetailsSectionProps {
   form: UseFormReturn<TalkSubmissionFormValues>;
 }
 
+function TypesLoader() {
+  return (
+    <div className="flex flex-col items-center justify-center p-4">
+      <Loader2 className="h-6 w-6 animate-spin text-primary mb-2" />
+      <p className="text-sm text-muted-foreground">Loading talk types...</p>
+    </div>
+  );
+}
+
 export function TechnicalDetailsSection({
   form,
 }: TechnicalDetailsSectionProps) {
+  const { data: talkTypes, isLoading, error } = useTalkTypes();
+
   return (
     <div className="space-y-6">
       <FormField
         control={form.control}
-        name="category"
+        name="typeId"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base flex items-center gap-1.5">
               <Tag className="h-4 w-4" />
-              Category
+              Type
             </FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select
+              onValueChange={(value) => field.onChange(parseInt(value))}
+              value={field.value?.toString()}
+            >
               <FormControl>
                 <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Select a category" />
+                  <SelectValue
+                    placeholder={isLoading ? "Loading..." : "Select a type"}
+                  />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {CATEGORIES.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
+                {isLoading ? (
+                  <TypesLoader />
+                ) : error ? (
+                  <div className="p-2 text-red-500 flex items-center gap-2">
+                    <span className="rounded-full bg-red-100 p-1">
+                      <span className="text-red-600 text-xs">!</span>
+                    </span>
+                    Failed to load types
+                  </div>
+                ) : (
+                  talkTypes?.map((type) => (
+                    <SelectItem key={type.id} value={type.id.toString()}>
+                      {type.label}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
             <FormDescription>Main topic covered in your talk</FormDescription>
@@ -65,7 +93,7 @@ export function TechnicalDetailsSection({
 
       <FormField
         control={form.control}
-        name="level"
+        name="levelId"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-base flex items-center gap-1.5">
@@ -76,8 +104,8 @@ export function TechnicalDetailsSection({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    onValueChange={(value) => field.onChange(parseInt(value))}
+                    value={field.value?.toString()}
                   >
                     <FormControl>
                       <SelectTrigger className="h-11">
@@ -85,8 +113,8 @@ export function TechnicalDetailsSection({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {EXPERIENCE_LEVELS.map(({ value, label }) => (
-                        <SelectItem key={value} value={value}>
+                      {LEVEL_OPTIONS.map(({ id, label }) => (
+                        <SelectItem key={id} value={id.toString()}>
                           {label}
                         </SelectItem>
                       ))}
