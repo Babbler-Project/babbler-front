@@ -13,7 +13,7 @@ export const SPEAKER_NAV_ITEMS: MenuItem[] = [
     icon: LayoutDashboard,
   },
   {
-    title: "Talks",
+    title: "My talks",
     url: "/speaker/talks",
     icon: MessageSquare,
     submenu: [

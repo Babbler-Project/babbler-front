@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import SpeakerLayout from "./SpeakerLayout";
 import SpeakerHomeDashboard from "../dashboard/components/SpeakerHomeDashboard";
 import SubmitTalkPage from "../talks/components/SubmitTalkPage";
+import MySubmissionsPage from "../talks/components/MySubmissionsPage";
 import { NotFound } from "@/components/shared/navigation/not-found";
 
 const SpeakerRouter = () => {
@@ -9,7 +10,7 @@ const SpeakerRouter = () => {
     <SpeakerLayout>
       <Routes>
         <Route path="/" element={<SpeakerHomeDashboard />} />
-        <Route path="/talks" element={<div>my talks</div>} />
+        <Route path="/talks" element={<MySubmissionsPage />} />
         <Route path="/talks/submit" element={<SubmitTalkPage />} />
         <Route path="/schedule" element={<div>schedule</div>} />
         <Route path="/resources" element={<div>resources</div>} />
