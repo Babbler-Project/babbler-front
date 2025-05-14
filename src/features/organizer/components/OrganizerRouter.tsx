@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import OrganizerLayout from "./OrganizerLayout";
 import OrganizerDashboard from "../dashboard/components/OrganizerDashboard";
 import { NotFound } from "@/components/shared/navigation/not-found";
+import OrganizerSettingsPage from "../settings/components/OrganizerSettingsPage";
 
 const OrganizerRouter = () => {
   return (
@@ -15,7 +16,7 @@ const OrganizerRouter = () => {
         <Route path="/talks/schedule" element={<div>Schedule Planning</div>} />
         <Route path="/speakers" element={<div>Speakers</div>} />
         <Route path="/schedule" element={<div>Schedule</div>} />
-        <Route path="/settings" element={<div>Settings</div>} />
+        <Route path="/settings" element={<OrganizerSettingsPage />} />
 
         <Route
           path="*"

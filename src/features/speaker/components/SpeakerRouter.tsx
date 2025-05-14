@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import SpeakerLayout from "./SpeakerLayout";
 import SpeakerHomeDashboard from "../dashboard/components/SpeakerHomeDashboard";
-import SubmitTalkPage from "../talks/components/SubmitTalkPage";
-import MySubmissionsPage from "../talks/components/MySubmissionsPage";
+import SubmitTalkPage from "../../organizer/talks/components/SubmitTalkPage";
+import MySubmissionsPage from "../../organizer/talks/components/MySubmissionsPage";
 import { NotFound } from "@/components/shared/navigation/not-found";
 import SpeakerSchedulePage from "../schedule/components/SpeakerSchedulePage";
 

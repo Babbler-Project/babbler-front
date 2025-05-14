@@ -1,5 +1,5 @@
 import { Form } from "@/components/ui/form";
-import { useTalkSubmission } from "@/features/speaker/talks/hooks/useTalkSubmission";
+import { useTalkSubmission } from "@/features/organizer/talks/hooks/useTalkSubmission";
 import { AccordionStepper } from "@/components/ui/accordion-stepper";
 import { useAccordionStepper } from "@/hooks/useAccordionStepper";
 import { SECTION_IDS, TALK_SUBMISSION_SECTIONS } from "./constants";
