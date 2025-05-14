@@ -1,5 +1,5 @@
-import type { TalkApiResponse } from "../types/api";
-import type { Talk, TalkLevel, TalkStatus } from "@/types/domain/Talk";
+import type { TalkApiResponse } from "../types";
+import type { Talk, TalkLevel, TalkSubmissionStatus } from "../types";
 
 export function mapApiTalkToDisplayTalk(talk: TalkApiResponse): Talk {
   return {
@@ -14,7 +14,7 @@ export function mapApiTalkToDisplayTalk(talk: TalkApiResponse): Talk {
     room: null,
     start: "",
     end: "",
-    status: talk.status.label as TalkStatus,
+    status: talk.status.label as TalkSubmissionStatus,
     createdAt: new Date(talk.createdAt).toLocaleDateString(),
   };
 }

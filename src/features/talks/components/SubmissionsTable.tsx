@@ -9,7 +9,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Clock, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { SubmissionTableItem } from "../mapper/submissionsMapper";
+import type { SubmissionTableItem } from "../types";
 
 interface SubmissionsTableProps {
   submissions: SubmissionTableItem[];

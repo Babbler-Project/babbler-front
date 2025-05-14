@@ -5,8 +5,7 @@ import PlanificationModal from "./PlanificationModal";
 import PendingTalkList from "./PendingTalkList";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetPendingTalks } from "@/features/talks/hooks/queries/useGetPendingTalks";
-import { toast } from "sonner";
-import type { Talk } from "@/types/domain/Talk";
+import type { Talk } from "@/features/talks/types";
 
 const OrganizerDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,18 +21,6 @@ const OrganizerDashboard = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedTalk(null);
-  };
-
-  const handleScheduleTalk = (
-    talk: Talk,
-    room: string,
-    date: Date,
-    startTime: Date,
-  ) => {
-    toast.success("Talk scheduled successfully", {
-      description: `${talk.title} has been scheduled in ${room} at ${startTime.toLocaleTimeString()}`,
-    });
-    handleCloseModal();
   };
 
   const handleRejectTalk = (talkId: string) => {
@@ -74,7 +61,6 @@ const OrganizerDashboard = () => {
         talk={selectedTalk}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onSchedule={handleScheduleTalk}
       />
     </div>
   );

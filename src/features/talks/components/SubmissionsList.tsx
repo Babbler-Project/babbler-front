@@ -7,8 +7,8 @@ import { type TalkSubmissionStatus } from "../types";
 import {
   mapSubmissionsToTableItems,
   statusColorMap,
-  type SubmissionTableItem,
 } from "../mapper/submissionsMapper";
+import type { SubmissionTableItem } from "../types";
 
 function SubmissionsGrid({
   submissions,
@@ -30,11 +30,7 @@ function SubmissionsGrid({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {submissions.map((submission) => (
-        <SubmissionCard
-          key={submission.id}
-          submission={submission}
-          statusColor={statusColorMap[submission.status]}
-        />
+        <SubmissionCard key={submission.id} submission={submission} />
       ))}
     </div>
   );
@@ -62,14 +58,11 @@ export function SubmissionsList() {
           {statusTabs.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
               {tab.label}
-              {tab.value !== "all" && (
-                <span className="ml-1 text-xs bg-muted rounded-full px-2 py-0.5">
-                  {tab.value !== "all"
-                    ? getSubmissionsByStatus(tab.value as TalkSubmissionStatus)
-                        .length
-                    : submissions.length}
-                </span>
-              )}
+              <span className="ml-1 text-xs bg-muted rounded-full px-2 py-0.5">
+                {tab.value === "all"
+                  ? submissions.length
+                  : getSubmissionsByStatus(tab.value).length}
+              </span>
             </TabsTrigger>
           ))}
         </TabsList>
@@ -90,7 +83,7 @@ export function SubmissionsList() {
               const filteredSubmissions =
                 tab.value === "all"
                   ? submissions
-                  : getSubmissionsByStatus(tab.value as TalkSubmissionStatus);
+                  : getSubmissionsByStatus(tab.value);
 
               const tableItems =
                 mapSubmissionsToTableItems(filteredSubmissions);

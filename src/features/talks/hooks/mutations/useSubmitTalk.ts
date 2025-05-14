@@ -3,7 +3,7 @@ import { httpClient } from "@/lib/api/http-client";
 import type {
   TalkSubmissionRequest,
   TalkSubmissionResponse,
-} from "../../types/api";
+} from "../../types";
 
 export const useSubmitTalk = () => {
   return useMutation({

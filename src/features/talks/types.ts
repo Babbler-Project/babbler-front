@@ -11,10 +11,11 @@ export interface Talk {
   durationDisplay: string; // formatted duration
   level: TalkLevel;
   type: string;
-  room: string;
+  room: string | null; // room name or null if not assigned
   start: string; // ISO date string
   end: string; // ISO date string
   status: TalkSubmissionStatus;
+  createdAt: string;
 }
 
 export interface TalkApiResponse {
@@ -44,6 +45,47 @@ export interface TalkApiResponse {
     createdAt: string;
     updatedAt: string;
   };
+}
+
+export interface PlanTalkRequest {
+  startDateTime: string; // format "2025-05-14 09:00:00"
+  endDateTime: string; // format "2025-05-14 09:30:00"
+  roomId: number;
+  talkId: number;
+}
+
+export interface PlanTalkResponse {
+  id: number;
+  startDateTime: string;
+  endDateTime: string;
+  createdAt: string;
+  updatedAt: string;
+  room: {
+    id: number;
+    // name: string;
+  };
+  talk: {
+    id: number;
+    // title: string;
+  };
+}
+
+export interface TalkSubmission {
+  id: string;
+  title: string;
+  description: string;
+  duration: number;
+  level: string;
+  category: string;
+  submittedAt: string;
+  status: TalkSubmissionStatus;
+  schedule?: {
+    room: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+  };
+  feedback?: string;
 }
 
 export interface TalkSubmissionRequest {
@@ -80,4 +122,11 @@ export interface SubmissionTableItem {
   };
   status: TalkSubmissionStatus;
   statusColor: string;
+  feedback?: string;
+  schedule?: {
+    room: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+  };
 }

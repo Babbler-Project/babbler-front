@@ -1,28 +1,7 @@
 import type { TalkSubmission, TalkSubmissionStatus } from "../types";
 import { formatDistanceToNow } from "date-fns";
+import type { SubmissionTableItem } from "../types";
 
-export interface SubmissionTableItem {
-  id: string;
-  title: string;
-  category: string;
-  level: string;
-  duration: number;
-  submittedAt: {
-    raw: string;
-    formatted: string;
-    timeAgo: string;
-  };
-  status: TalkSubmissionStatus;
-  feedback?: string;
-  schedule?: {
-    room: string;
-    date: string;
-    startTime: string;
-    endTime: string;
-  };
-}
-
-// Status color mapping
 export const statusColorMap: Record<TalkSubmissionStatus, string> = {
   pending:
     "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400",
@@ -48,14 +27,13 @@ export const mapSubmissionToTableItem = (
       timeAgo: formatDistanceToNow(submittedDate, { addSuffix: true }),
     },
     status: submission.status,
+    statusColor: statusColorMap[submission.status],
   };
 
-  // Add feedback for rejected submissions
   if (submission.status === "rejected" && submission.feedback) {
     result.feedback = submission.feedback;
   }
 
-  // Add schedule info for accepted submissions
   if (submission.status === "accepted" && submission.schedule) {
     result.schedule = {
       room: submission.schedule.room,
