@@ -53,14 +53,14 @@ const OrganizerDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full min-h-screen">
+    <div className="flex flex-col gap-4 w-full">
       <div className="grid grid-cols-4 gap-4">
-        <Card className="col-span-3 p-4 flex-1">
-          <CalendarView className="max-h-[calc(100vh-5rem)]" />
+        <Card className="col-span-3 p-4 flex-1 h-[calc(100vh-7rem)]">
+          <CalendarView className="h-full" />
         </Card>
-        <Card className="col-span-1 p-4 flex flex-col gap-4">
+        <Card className="col-span-1 p-4 flex flex-col gap-4 h-[calc(100vh-7rem)]">
           <h2 className="text-lg font-semibold">Talks to Validate</h2>
-          <div className="flex flex-col gap-3 max-h-[calc(100vh-10rem)] overflow-y-auto pr-1">
+          <div className="flex flex-col gap-3 overflow-y-auto pr-1">
             {pendingTalks.length === 0 ? (
               <p className="text-gray-500">No talks pending validation</p>
             ) : (
