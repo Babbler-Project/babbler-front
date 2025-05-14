@@ -90,11 +90,11 @@ export function SubmissionCard({ submission }: SubmissionCardProps) {
   // Determine which footer to render based on status
   const renderFooter = () => {
     switch (submission.status) {
-      case "accepted":
+      case "Planed":
         return <AcceptedFooter schedule={submission.schedule} />;
-      case "pending":
+      case "Pending":
         return <PendingFooter timeAgo={submission.submittedAt.timeAgo} />;
-      case "rejected":
+      case "Refused":
         return submission.feedback ? (
           <RejectedFooter feedback={submission.feedback} />
         ) : null;

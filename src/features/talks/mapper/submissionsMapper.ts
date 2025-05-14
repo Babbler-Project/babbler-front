@@ -3,11 +3,11 @@ import { formatDistanceToNow } from "date-fns";
 import type { SubmissionTableItem } from "../types";
 
 export const statusColorMap: Record<TalkSubmissionStatus, string> = {
-  pending:
+  Pending:
     "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30 dark:text-yellow-400",
-  accepted:
+  Planed:
     "text-green-600 bg-green-100 dark:bg-green-900/30 dark:text-green-400",
-  rejected: "text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400",
+  Refused: "text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400",
 };
 
 export const mapSubmissionToTableItem = (
@@ -30,11 +30,11 @@ export const mapSubmissionToTableItem = (
     statusColor: statusColorMap[submission.status],
   };
 
-  if (submission.status === "rejected" && submission.feedback) {
+  if (submission.status === "Refused" && submission.feedback) {
     result.feedback = submission.feedback;
   }
 
-  if (submission.status === "accepted" && submission.schedule) {
+  if (submission.status === "Planed" && submission.schedule) {
     result.schedule = {
       room: submission.schedule.room,
       date: new Date(submission.schedule.date).toLocaleDateString(),
