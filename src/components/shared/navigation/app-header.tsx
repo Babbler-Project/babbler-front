@@ -1,4 +1,4 @@
-import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { useLocation, Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import type { MenuItem } from "@/types/menuItem";
@@ -85,6 +85,7 @@ function generateBreadcrumbs(
 
 export function AppHeader({ navItems, basePath, actions }: AppHeaderProps) {
   const location = useLocation();
+  const { state } = useSidebar();
   const currentPath = location.pathname.endsWith("/")
     ? location.pathname.slice(0, -1)
     : location.pathname;
@@ -94,9 +95,11 @@ export function AppHeader({ navItems, basePath, actions }: AppHeaderProps) {
 
   return (
     <header
+      data-expanded={state !== "collapsed"}
       className={cn(
-        "sticky top-0 right-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 bg-background",
-        "transition-[margin] duration-200 ease-linear",
+        "fixed top-0 left-[256px] right-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 bg-background",
+        "transition-all duration-200 ease-linear",
+        "data-[expanded=false]:left-[48px]",
       )}
     >
       <div className="flex items-center gap-2">

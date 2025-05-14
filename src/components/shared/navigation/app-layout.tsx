@@ -31,7 +31,7 @@ export function AppLayout({
           basePath={basePath}
           actions={headerActions}
         />
-        <main className="flex-1 p-4 md:p-6">{children}</main>
+        <main className="flex-1 p-4 md:p-6 mt-16">{children}</main>
       </div>
     </SidebarProvider>
   );
