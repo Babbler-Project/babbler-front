@@ -14,10 +14,12 @@ export const talkSubmissionSchema = z.object({
     .int()
     .min(15, "Minimum duration is 15 minutes")
     .max(180, "Maximum duration is 3 hours (180 minutes)"),
-  level: z.enum(["Beginner", "Intermediate", "Advanced"], {
+  levelId: z.number({
     required_error: "Please select a level",
   }),
-  category: z.string().min(1, "Please select a category"),
+  typeId: z.number({
+    required_error: "Please select a type",
+  }),
 });
 
 export type TalkSubmissionFormValues = z.infer<typeof talkSubmissionSchema>;

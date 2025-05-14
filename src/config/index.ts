@@ -11,8 +11,6 @@ const configSchema = z.object({
   }),
 });
 
-type Config = z.infer<typeof configSchema>;
-
 const config = {
   API: {
     BASE_URL: import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api",

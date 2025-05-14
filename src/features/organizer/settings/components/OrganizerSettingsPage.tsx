@@ -1,4 +1,4 @@
-import { useTalkTypes } from "../../talks/talkTypes/hooks/queries/useGetTypes";
+import { useTalkTypes } from "@/features/talks/talkTypes/hooks/queries/useGetTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";

@@ -11,14 +11,14 @@ export const talkTypeKeys = {
 export const useTalkTypes = () => {
   return useQuery({
     queryKey: talkTypeKeys.lists(),
-    queryFn: () => httpClient.get<TalkType[]>("/organizers/types"),
+    queryFn: () => httpClient.get<TalkType[]>("/types"),
   });
 };
 
 export const useTalkTypeById = (id: number) => {
   return useQuery({
     queryKey: talkTypeKeys.detail(id),
-    queryFn: () => httpClient.get<TalkType>(`/organizers/types/${id}`),
+    queryFn: () => httpClient.get<TalkType>(`/types/${id}`),
     enabled: !!id,
   });
 };

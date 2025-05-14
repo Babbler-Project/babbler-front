@@ -1,18 +1,10 @@
 import { CheckCircle2, MessageSquare, Briefcase } from "lucide-react";
 import type { StepSection } from "@/hooks/useAccordionStepper";
 
-export const CATEGORIES = [
-  "Frontend",
-  "Backend",
-  "DevOps",
-  "Mobile",
-  "UX/UI",
-  "Data Science",
-  "Machine Learning",
-  "Security",
-  "Architecture",
-  "Languages",
-  "Other",
+export const LEVEL_OPTIONS = [
+  { id: 1, label: "Beginner" },
+  { id: 2, label: "Intermediate" },
+  { id: 3, label: "Advanced" },
 ];
 
 export const TALK_SUBMISSION_SECTIONS: Record<
@@ -29,7 +21,7 @@ export const TALK_SUBMISSION_SECTIONS: Record<
     id: "details",
     title: "Technical Details",
     icon: <Briefcase className="h-5 w-5" />,
-    fields: ["category", "level", "duration"],
+    fields: ["typeId", "levelId", "duration"],
   },
   review: {
     id: "review",
@@ -41,9 +33,3 @@ export const TALK_SUBMISSION_SECTIONS: Record<
 
 export const SECTION_IDS = ["info", "details", "review"] as const;
 export type TalkFormSectionId = (typeof SECTION_IDS)[number];
-
-export const EXPERIENCE_LEVELS = [
-  { value: "Beginner", label: "Beginner" },
-  { value: "Intermediate", label: "Intermediate" },
-  { value: "Advanced", label: "Advanced" },
-];
