@@ -1,4 +1,4 @@
-import type { TalkStatus } from "@/utils/talkStatus";
+import { TALK_STATUS } from "@/utils/talkStatus";
 
 export interface Talk {
   id: string;
@@ -14,7 +14,7 @@ export interface Talk {
   status: TalkStatus;
 }
 
-export type TalkStatus = (typeof TalkStatus)[keyof typeof TalkStatus];
+export type TalkStatus = (typeof TALK_STATUS)[keyof typeof TALK_STATUS];
 
 export type TalkLevel = "Beginner" | "Intermediate" | "Advanced";
 

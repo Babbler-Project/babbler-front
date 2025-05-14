@@ -5,8 +5,8 @@ import { Check, X } from "lucide-react";
 import mockTalks from "../data/mock-pending-talks.json";
 import { useState } from "react";
 import PlanificationModal from "./PlanificationModal";
-import type { Room, Talk, TalkLevel } from "@/types/domain/Talk";
-import { TalkStatus } from "@/utils/talkStatus";
+import type { Room, Talk, TalkLevel, TalkStatus } from "@/types/domain/Talk";
+import { TALK_STATUS } from "@/utils/talkStatus";
 
 const OrganizerDashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,26 +22,18 @@ const OrganizerDashboard = () => {
     setSelectedTalk(null);
   };
 
-  const handleScheduleTalk = (
-    talk: Talk,
-    room: string,
-    date: Date,
-    startTime: Date,
-  ) => {
-    // Update your talk with the scheduled information
-    console.log("Scheduling talk:", { talk, room, date, startTime });
-
-    // Close the modal
+  const handleScheduleTalk = () => {
     handleCloseModal();
   };
 
   const [pendingTalks, setPendingTalks] = useState(
     mockTalks
-      .filter((talk) => talk.status === TalkStatus.PENDING)
+      .filter((talk) => talk.status === TALK_STATUS.PENDING)
       .map((talk) => ({
         ...talk,
         level: talk.level as TalkLevel, // Ensure level is cast to TalkLevel
         room: talk.room ? (talk.room as Room) : null, // Ensure room is cast to Room or null
+        status: talk.status as TalkStatus, // Ensure status is cast to TalkStatus
       })),
   );
 
@@ -52,16 +44,16 @@ const OrganizerDashboard = () => {
           talk.id === talkId
             ? {
                 ...talk,
-                status: isApproved ? TalkStatus.PENDING : TalkStatus.REJECTED,
+                status: isApproved ? TALK_STATUS.PENDING : TALK_STATUS.REJECTED,
               }
             : talk,
         )
-        .filter((talk) => talk.status === TalkStatus.PENDING),
+        .filter((talk) => talk.status === TALK_STATUS.PENDING),
     );
   };
 
   return (
-    <div className="flex flex-col gap-4 w-full min-h-screen min-w-screen bg-background p-4">
+    <div className="flex flex-col gap-4 w-full min-h-screen">
       <div className="grid grid-cols-4 gap-4">
         <Card className="col-span-3 p-4 flex-1">
           <CalendarView className="max-h-[calc(100vh-5rem)]" />
