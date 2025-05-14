@@ -88,11 +88,7 @@ export function WeekView({ currentDate, talks }: WeekViewProps) {
                         width: talk.position.width,
                       }}
                     >
-                      <TalkItem
-                        talk={talk}
-                        hasTooltip={true}
-                        className="h-full"
-                      />
+                      <TalkItem talk={talk} className="h-full" />
                     </div>
                   ))}
                 </div>

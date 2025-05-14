@@ -56,10 +56,7 @@ export function SubmissionsKanban({
                 key={submission.id}
                 className="hover:-translate-y-0.5 transition-transform duration-150"
               >
-                <SubmissionCard
-                  submission={submission}
-                  statusColor={statusColors[column.status]}
-                />
+                <SubmissionCard submission={submission} />
               </div>
             ))}
 

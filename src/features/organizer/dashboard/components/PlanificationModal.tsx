@@ -14,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import {
   Select,
   SelectContent,
@@ -30,27 +29,35 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import type { Talk } from "@/types/domain/Talk";
+import { usePlanTalk } from "@/features/talks/hooks/mutations/usePlanTalk";
+import { useRooms } from "../../room/hooks/queries/useRooms";
+import type { Talk } from "@/features/talks/types";
+import { MAX_TIME, MIN_TIME } from "../../constants/time";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface PlanificationModalProps {
   talk: Talk | null;
   isOpen: boolean;
   onClose: () => void;
-  onSchedule: (talk: Talk, room: string, date: Date, startTime: Date) => void;
 }
 
 const PlanificationModal = ({
   talk,
   isOpen,
   onClose,
-  onSchedule,
 }: PlanificationModalProps) => {
-  const [selectedRoom, setSelectedRoom] = useState<string>("");
+  const [selectedRoomId, setSelectedRoomId] = useState<string>("");
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [startTime, setStartTime] = useState<Date | undefined>(undefined);
   const [endTime, setEndTime] = useState<Date | undefined>(undefined);
 
-  const rooms = ["Room A", "Room B", "Room C", "Room D", "Room E"];
+  const {
+    data: rooms,
+    isLoading: roomsLoading,
+    error: roomsError,
+  } = useRooms();
+
+  const planTalkMutation = usePlanTalk();
 
   const onCloseModal = () => {
     resetForm();
@@ -65,9 +72,6 @@ const PlanificationModal = ({
     setDate(newDate);
   };
 
-  /**
-   * Calculate end time based on start time and talk duration
-   **/
   const handleStartTimeChange = (time: Date | undefined) => {
     setStartTime(time);
     if (time && talk) {
@@ -78,23 +82,41 @@ const PlanificationModal = ({
   };
 
   const handleSchedule = () => {
-    if (talk && selectedRoom && date && startTime) {
-      const scheduledDate = new Date(date);
-      scheduledDate.setHours(startTime.getHours(), startTime.getMinutes());
+    if (talk && selectedRoomId && date && startTime && endTime) {
+      // Create a complete date for the start
+      const fullStartDate = new Date(date);
+      fullStartDate.setHours(startTime.getHours(), startTime.getMinutes(), 0);
 
-      onSchedule(talk, selectedRoom, date, startTime);
-      resetForm();
+      // Create a complete date for the end
+      const fullEndDate = new Date(date);
+      fullEndDate.setHours(endTime.getHours(), endTime.getMinutes(), 0);
+
+      // Call mutation with formatted data
+      planTalkMutation.mutate(
+        {
+          talkId: parseInt(talk.id),
+          roomId: parseInt(selectedRoomId),
+          startDate: fullStartDate,
+          endDate: fullEndDate,
+        },
+        {
+          onSuccess: () => {
+            onCloseModal();
+          },
+        },
+      );
     }
   };
 
   const resetForm = () => {
-    setSelectedRoom("");
+    setSelectedRoomId("");
     setDate(undefined);
     setStartTime(undefined);
     setEndTime(undefined);
   };
 
-  const isFormValid = selectedRoom && date && startTime;
+  const isFormValid = selectedRoomId && date && startTime;
+  const isPending = planTalkMutation.isPending;
 
   return (
     <Dialog
@@ -118,19 +140,17 @@ const PlanificationModal = ({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-4"></div>
-
             <div className="flex flex-wrap gap-1.5 items-center text-sm">
               <span className="font-medium">Speaker:</span>
               <span>{talk.speaker}</span>
               <Badge variant="outline" className="ml-2">
-                {talk.duration} min
+                {talk.durationDisplay}
               </Badge>
               <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200">
                 {talk.level}
               </Badge>
               <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-200">
-                {talk.category}
+                {talk.type}
               </Badge>
             </div>
 
@@ -139,18 +159,29 @@ const PlanificationModal = ({
                 <Label htmlFor="room" className="text-right">
                   Room
                 </Label>
-                <Select value={selectedRoom} onValueChange={setSelectedRoom}>
-                  <SelectTrigger id="room" className="col-span-3">
-                    <SelectValue placeholder="Select a room" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {rooms.map((room) => (
-                      <SelectItem key={room} value={room}>
-                        {room}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {roomsLoading ? (
+                  <Skeleton className="h-10 col-span-3" />
+                ) : roomsError ? (
+                  <div className="col-span-3 text-red-500">
+                    Failed to load rooms
+                  </div>
+                ) : (
+                  <Select
+                    value={selectedRoomId}
+                    onValueChange={setSelectedRoomId}
+                  >
+                    <SelectTrigger id="room" className="col-span-3">
+                      <SelectValue placeholder="Select a room" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {rooms?.map((room) => (
+                        <SelectItem key={room.id} value={room.id.toString()}>
+                          {room.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </div>
 
               <div className="grid grid-cols-4 items-center gap-4">
@@ -187,13 +218,12 @@ const PlanificationModal = ({
                   Start time
                 </Label>
                 <div className="col-span-3 flex items-center">
-                  <Clock className="mr-2 h-4 w-4" />
                   <Input
                     id="startTime"
                     className="w-24"
                     type="time"
-                    min={"09:00"}
-                    max={"19:00"}
+                    min={MIN_TIME}
+                    max={MAX_TIME}
                     step={1800}
                     value={startTime ? format(startTime, "HH:mm") : ""}
                     onChange={(e) => {
@@ -226,16 +256,22 @@ const PlanificationModal = ({
         )}
 
         <DialogFooter>
-          <Button variant="outline" onClick={onCloseModal}>
+          <Button variant="outline" onClick={onCloseModal} disabled={isPending}>
             Cancel
           </Button>
           <Button
             onClick={handleSchedule}
-            disabled={!isFormValid}
+            disabled={!isFormValid || isPending}
             className="gap-1"
           >
-            <CalendarCheck className="h-4 w-4" />
-            Schedule Talk
+            {isPending ? (
+              <>Processing...</>
+            ) : (
+              <>
+                <CalendarCheck className="h-4 w-4" />
+                Schedule Talk
+              </>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

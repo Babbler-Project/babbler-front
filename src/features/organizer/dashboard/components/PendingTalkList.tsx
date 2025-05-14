@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import type { Talk } from "@/types/domain/Talk";
+import type { Talk } from "@/features/talks/types";
 import { Check, X } from "lucide-react";
 
 interface PendingTalkListProps {
@@ -18,7 +18,7 @@ const PendingTalkList = ({
 }: PendingTalkListProps) => {
   return (
     <div className={className}>
-      <h2 className="text-lg font-semibold">Talks to Validate</h2>
+      <h2 className="text-lg font-semibold">Talks to validate</h2>
       <div className="flex flex-col gap-3 overflow-y-auto pr-1 mt-4">
         {talks.length === 0 ? (
           <p className="text-gray-500">No talks pending validation</p>
@@ -44,14 +44,14 @@ const PendingTalkList = ({
                   </div>
                   <div className="flex gap-2">
                     <span className="font-medium">Duration:</span>{" "}
-                    {talk.duration}min
+                    {talk.durationDisplay}
                   </div>
                   <div className="flex flex-wrap gap-2 mt-1">
                     <span className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full text-xs">
                       {talk.level}
                     </span>
                     <span className="bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full text-xs">
-                      {talk.category}
+                      {talk.type}
                     </span>
                   </div>
                 </div>

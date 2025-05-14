@@ -15,7 +15,7 @@ import {
   Calendar,
   type LucideIcon,
 } from "lucide-react";
-import type { SubmissionTableItem } from "../mapper/submissionsMapper";
+import type { SubmissionTableItem } from "../types";
 
 interface SubmissionCardProps {
   submission: SubmissionTableItem;
