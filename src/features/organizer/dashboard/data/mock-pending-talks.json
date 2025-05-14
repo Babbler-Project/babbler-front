@@ -1,0 +1,41 @@
+[
+  {
+    "id": "1",
+    "title": "Introduction to React",
+    "description": "Learn the fundamentals of React and how to build modern UIs",
+    "speaker": "Sarah Johnson",
+    "duration": 60,
+    "level": "Beginner",
+    "category": "Frontend",
+    "room": "Room A",
+    "start": "",
+    "end": "",
+    "status": "Pending"
+  },
+  {
+    "id": "2",
+    "title": "Advanced TypeScript Patterns",
+    "description": "Dive deep into TypeScript's type system and advanced patterns",
+    "speaker": "Michael Chen",
+    "duration": 90,
+    "level": "Advanced",
+    "category": "Languages",
+    "room": "Room B",
+    "start": "",
+    "end": "",
+    "status": "Pending"
+  },
+  {
+    "id": "3",
+    "title": "Building Microservices with Go",
+    "description": "Learn how to design and implement microservices using Go",
+    "speaker": "Alex Rivera",
+    "duration": 120,
+    "level": "Intermediate",
+    "category": "Backend",
+    "room": "Room C",
+    "start": "",
+    "end": "",
+    "status": "Pending"
+  }
+]
