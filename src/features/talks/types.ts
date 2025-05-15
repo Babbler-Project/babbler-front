@@ -1,4 +1,4 @@
-export type TalkSubmissionStatus = "pending" | "accepted" | "rejected";
+export type TalkSubmissionStatus = "Pending" | "Planed" | "Refused";
 
 export type TalkLevel = "Beginner" | "Intermediate" | "Advanced";
 
@@ -33,6 +33,35 @@ export interface TalkApiResponse {
   level: {
     id: number;
     label: string;
+  };
+  type: {
+    id: number;
+    label: string;
+  };
+  speaker: {
+    id: number;
+    email: string;
+    roleId: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+}
+
+export interface SpeakerTalkApiResponse {
+  id: number;
+  title: string;
+  description: string;
+  duration: number;
+  messageFeedback: string | null;
+  createdAt: string;
+  updatedAt: string;
+  status: {
+    id: number;
+    label: string; // "Pending", "Planed", "Refused"
+  };
+  level: {
+    id: number;
+    label: string; // "Beginer"
   };
   type: {
     id: number;

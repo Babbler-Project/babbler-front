@@ -1,27 +1,13 @@
-import { useState, useEffect } from "react";
-import { MOCK_SUBMISSIONS } from "../data/mock-submissions";
-import type { TalkSubmission, TalkSubmissionStatus } from "../types";
+import { useGetSpeakerTalks } from "./queries/useGetSpeakerTalks";
+import type { TalkSubmissionStatus } from "../types";
 
 export function useSubmissions() {
-  const [submissions, setSubmissions] = useState<TalkSubmission[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchSubmissions = async () => {
-      try {
-        // Simulation d'appel API avec délai
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        setSubmissions(MOCK_SUBMISSIONS);
-        setIsLoading(false);
-      } catch {
-        setError("Failed to fetch submissions");
-        setIsLoading(false);
-      }
-    };
-
-    fetchSubmissions();
-  }, []);
+  const {
+    data: submissions = [],
+    isLoading,
+    error,
+    refetch,
+  } = useGetSpeakerTalks();
 
   const getSubmissionsByStatus = (status?: TalkSubmissionStatus) => {
     if (!status) return submissions;
@@ -31,7 +17,8 @@ export function useSubmissions() {
   return {
     submissions,
     isLoading,
-    error,
+    error: error ? (error as Error).message : null,
     getSubmissionsByStatus,
+    refetch,
   };
 }

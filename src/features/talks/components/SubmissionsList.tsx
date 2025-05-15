@@ -42,9 +42,9 @@ export function SubmissionsList() {
 
   const statusTabs: { value: TalkSubmissionStatus | "all"; label: string }[] = [
     { value: "all", label: "All" },
-    { value: "pending", label: "Pending" },
-    { value: "accepted", label: "Accepted" },
-    { value: "rejected", label: "Rejected" },
+    { value: "Pending", label: "Pending" },
+    { value: "Planed", label: "Scheduled" },
+    { value: "Refused", label: "Refused" },
   ];
 
   if (error) {

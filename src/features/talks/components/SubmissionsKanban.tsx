@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { SubmissionCard } from "./SubmissionCard";
-import type { SubmissionTableItem } from "../mapper/submissionsMapper";
+import type { SubmissionTableItem } from "../types";
 
 interface SubmissionsKanbanProps {
   submissions: SubmissionTableItem[];
@@ -31,9 +31,9 @@ export function SubmissionsKanban({
   }
 
   const statusColumns = [
-    { status: "pending", title: "Pending" },
-    { status: "accepted", title: "Accepted" },
-    { status: "rejected", title: "Rejected" },
+    { status: "Pending", title: "Pending" },
+    { status: "Planed", title: "Planed" },
+    { status: "Refused", title: "Refused" },
   ];
 
   return (

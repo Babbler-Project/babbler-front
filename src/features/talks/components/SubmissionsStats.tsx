@@ -1,37 +1,61 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check, Clock, MessageSquare, FileText } from "lucide-react";
+import { useSubmissions } from "../hooks/useTalkSubmissions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { mapSubmissionsToStats } from "../mapper/submissionsStatsMapper";
 
 export function SubmissionsStats() {
-  // @TODO: Fetch stats from the API
-  const stats = [
+  const { submissions, isLoading } = useSubmissions();
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {Array(4)
+          .fill(0)
+          .map((_, i) => (
+            <Skeleton key={i} className="h-24 w-full" />
+          ))}
+      </div>
+    );
+  }
+
+  const stats = mapSubmissionsToStats(submissions);
+
+  const statCards = [
     {
       title: "Total Submissions",
-      value: 24,
+      value: stats.totalCount,
       icon: <FileText className="h-4 w-4" />,
     },
     {
-      title: "Accepted Talks",
-      value: 8,
-      percentage: "33%",
+      title: "Scheduled Talks",
+      value: stats.acceptedCount,
+      percentage: `${stats.acceptedPercentage}%`,
       icon: <Check className="h-4 w-4" />,
       accent: "text-emerald-600 dark:text-emerald-400",
     },
     {
       title: "Pending Review",
-      value: 15,
+      value: stats.pendingCount,
       icon: <Clock className="h-4 w-4" />,
       accent: "text-amber-600 dark:text-amber-400",
     },
     {
       title: "Speaker Minutes",
-      value: 385,
+      value: stats.totalMinutes,
       icon: <MessageSquare className="h-4 w-4" />,
     },
+    // {
+    //   title: "Refused Talks",
+    //   value: stats.refusedCount,
+    //   icon: <XCircle className="h-4 w-4" />,
+    //   accent: "text-red-600 dark:text-red-400",
+    // },
   ];
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      {stats.map((stat, index) => (
+      {statCards.map((stat, index) => (
         <Card key={index} className="overflow-hidden border shadow-sm gap-2">
           <CardHeader className="pb-2 px-5">
             <div className="flex items-center justify-between">
