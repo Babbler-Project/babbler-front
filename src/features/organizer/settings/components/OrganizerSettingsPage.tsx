@@ -1,9 +1,4 @@
-import {
-  useCreateTalkType,
-  useDeleteTalkType,
-  useTalkTypes,
-  useUpdateTalkType,
-} from "@/features/talks/talkTypes/hooks/queries/useGetTypes";
+import { useTalkTypes } from "@/features/talks/talkTypes/hooks/queries/useGetTypes";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,6 +6,9 @@ import { useState } from "react";
 import ConfirmDeleteTypeDialog from "./AlertConfirmTypeDialog";
 import { toast } from "sonner";
 import TalkTypeForm from "./TalkTypeForm";
+import { useCreateTalkType } from "@/features/talks/talkTypes/hooks/mutations/useCreateTalkType";
+import { useDeleteTalkType } from "@/features/talks/talkTypes/hooks/mutations/useDeleteTalkType";
+import { useUpdateTalkType } from "@/features/talks/talkTypes/hooks/mutations/useUpdateTalkType";
 
 export default function OrganizerSettingsPage() {
   const { data: talkTypes, isLoading, error } = useTalkTypes();
