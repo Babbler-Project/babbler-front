@@ -9,9 +9,10 @@ import type { Talk } from "../types";
 interface WeekViewProps {
   currentDate: Date;
   talks: Talk[];
+  isLoading?: boolean;
+  error?: { message: string; retry: () => void };
 }
-
-export function WeekView({ currentDate, talks }: WeekViewProps) {
+export function WeekView({ currentDate, talks, error }: WeekViewProps) {
   const weekDays = useMemo(() => getWeekDays(currentDate), [currentDate]);
   const timeSlots = useMemo(() => generateTimeSlots(), []);
 
@@ -25,13 +26,11 @@ export function WeekView({ currentDate, talks }: WeekViewProps) {
     <div className="flex flex-col h-full">
       {/* Day headers */}
       <div className="flex border-b sticky top-0 bg-background z-10">
-        {/* Time column header */}
         <div className="w-16 shrink-0 border-r p-2 text-center font-medium text-xs text-muted-foreground">
           Time
         </div>
 
-        {/* Day headers */}
-        <div className="grid grid-cols-7 flex-1">
+        <div className="grid grid-cols-7 flex-1 w-[calc(100%-4rem)]">
           {weekDays.map((day, idx) => (
             <div key={idx} className="border-r p-2 text-center font-medium">
               {formatDay(day)}
@@ -58,10 +57,23 @@ export function WeekView({ currentDate, talks }: WeekViewProps) {
         </div>
 
         {/* Days columns */}
-        <div className="grid grid-cols-7 flex-1">
+        <div className="grid grid-cols-7 flex-1 relative">
+          {error && (
+            <div className="absolute inset-0 flex items-start justify-center bg-background/80 z-10 pt-12">
+              <div className="text-red-500 p-4 bg-red-50 rounded border border-red-200">
+                {error.message}
+                <button
+                  className="ml-4 px-2 py-1 bg-red-100 rounded"
+                  onClick={error.retry}
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
           {weekDays.map((_, dayIdx) => {
             const dayTalks = mappedWeekTalks[dayIdx] || [];
-            // N'afficher le label que sur la première colonne pour éviter l'encombrement visuel
             const isFirstColumn = dayIdx === 0;
 
             return (
@@ -75,7 +87,6 @@ export function WeekView({ currentDate, talks }: WeekViewProps) {
                   ),
                 )}
 
-                {/* Talks */}
                 <div className="absolute inset-0">
                   {dayTalks.map((talk) => (
                     <div

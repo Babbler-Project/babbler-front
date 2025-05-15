@@ -1,5 +1,37 @@
-import type { Talk, PositionedTalk } from "./types";
+import type { PlanningApiResponse, Talk, PositionedTalk } from "./types";
 import { calculateEventPosition, getTalksForDay } from "./utils";
+
+export const mapPlanningsToTalks = (
+  plannings: PlanningApiResponse[],
+): Talk[] => {
+  return plannings
+    .map((planning) => {
+      try {
+        if (!planning.talk || !planning.room) {
+          console.warn("Planning missing required data:", planning);
+          return null;
+        }
+
+        return {
+          id: planning.id.toString(),
+          title: planning.talk.title || "Untitled Talk",
+          description: planning.talk.description || "",
+          speaker: planning.talk.speaker?.email || "Unknown Speaker",
+          duration: planning.talk.duration || 0,
+          level: planning.talk.level?.label || "Beginner",
+          type: planning.talk.type?.label || "General",
+          room: planning.room.name || "TBD",
+          start: planning.startTime,
+          end: planning.endTime,
+          status: planning.talk.status?.label || "Planed",
+        };
+      } catch (error) {
+        console.error("Error mapping planning:", error, planning);
+        return null;
+      }
+    })
+    .filter(Boolean) as Talk[];
+};
 
 /**
  * Determines if two events overlap in time

@@ -1,6 +1,21 @@
 import { config } from "@/config";
 import type { FetchOptions } from "./types";
 
+interface ApiErrorResponse {
+  error: string;
+  message: string;
+}
+
+export class ApiError extends Error {
+  error: string;
+
+  constructor(errorResponse: ApiErrorResponse) {
+    super(errorResponse.message);
+    this.name = "ApiError";
+    this.error = errorResponse.error;
+  }
+}
+
 const createHttpClient = () => {
   const request = async <T>(
     endpoint: string,
@@ -24,10 +39,33 @@ const createHttpClient = () => {
     });
 
     if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(
-        errorMessage || `Request failed with status ${response.status}`,
-      );
+      try {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = (await response.json()) as ApiErrorResponse;
+
+          if (errorData.error && errorData.message) {
+            throw new ApiError(errorData);
+          }
+
+          throw new Error(JSON.stringify(errorData));
+        }
+
+        const errorMessage = await response.text();
+        throw new Error(
+          errorMessage || `Request failed with status ${response.status}`,
+        );
+      } catch (error) {
+        if (error instanceof ApiError) {
+          throw error;
+        }
+
+        throw new Error(
+          error instanceof Error
+            ? error.message
+            : `Request failed with status ${response.status}`,
+        );
+      }
     }
 
     if (responseType === "blob") {

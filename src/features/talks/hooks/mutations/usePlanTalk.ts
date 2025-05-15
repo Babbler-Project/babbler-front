@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { httpClient } from "@/lib/api/http-client";
+import { httpClient, ApiError } from "@/lib/api/http-client";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { pendingTalksKeys } from "../queries/useGetPendingTalks";
+import { planningKeys } from "@/features/calendar/hooks/queries/useGetPlannings";
 
-// The actual API response structure
 interface PlanningApiResponse {
   id: number;
   startTime: string;
@@ -32,7 +32,6 @@ export const usePlanTalk = () => {
       startDate: Date;
       endDate: Date;
     }) => {
-      // Format dates directly here - no need for a separate mapper
       const requestData = {
         talkId,
         roomId,
@@ -47,8 +46,8 @@ export const usePlanTalk = () => {
     },
 
     onSuccess: (response) => {
-      // Invalidate the queries that need to be refreshed
       queryClient.invalidateQueries({ queryKey: pendingTalksKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: planningKeys.all });
 
       const startTime = new Date(response.startTime).toLocaleTimeString();
 
@@ -57,7 +56,14 @@ export const usePlanTalk = () => {
       });
     },
 
-    onError: (error) => {
+    onError: (error: unknown) => {
+      if (error instanceof ApiError) {
+        toast.error(error.error, {
+          description: error.message,
+        });
+        return;
+      }
+
       toast.error("Failed to schedule talk", {
         description:
           error instanceof Error ? error.message : "Please try again later",

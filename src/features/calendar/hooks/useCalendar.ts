@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { addDays, subDays, addWeeks, subWeeks } from "date-fns";
+import { getViewDateRange } from "../utils";
 import type { CalendarViewType } from "../types";
-import mockTalks from "../data/mock-talks.json";
-import type { Talk } from "@/types/domain/Talk";
 
 export function useCalendar() {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [viewType, setViewType] = useState<CalendarViewType>("week");
-  const [talks, setTalks] = useState<Talk[]>(mockTalks as Talk[]);
 
+  // Calculate current date range based on view type
+  const dateRange = useMemo(
+    () => getViewDateRange(currentDate, viewType),
+    [currentDate, viewType],
+  );
+
+  // Navigation functions
   const goToToday = () => setCurrentDate(new Date());
   const goToNextDay = () => setCurrentDate(addDays(currentDate, 1));
   const goToPrevDay = () => setCurrentDate(subDays(currentDate, 1));
@@ -35,8 +40,7 @@ export function useCalendar() {
     setCurrentDate,
     viewType,
     setViewType,
-    talks,
-    setTalks,
+    dateRange,
     navigation: {
       goToToday,
       goToNextDay,

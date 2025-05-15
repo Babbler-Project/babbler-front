@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { httpClient } from "@/lib/api/http-client";
 import { toast } from "sonner";
 import { pendingTalksKeys } from "../queries/useGetPendingTalks";
+import { planningKeys } from "@/features/calendar/hooks/queries/useGetPlannings";
 
 interface RejectTalkResponse {
   id: number;
@@ -27,7 +28,9 @@ export const useRejectTalk = () => {
     },
 
     onSuccess: () => {
+      // Invalidate the queries that need to be refreshed
       queryClient.invalidateQueries({ queryKey: pendingTalksKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: planningKeys.all });
 
       toast.success("Talk rejected", {
         description:
