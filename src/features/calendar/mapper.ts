@@ -183,6 +183,8 @@ export const levelColors = {
   Intermediate: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300",
   Advanced:
     "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300",
+  // Add the misspelled version as fallback
+  Beginer: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300",
 };
 
 /**
@@ -192,4 +194,11 @@ export const levelBorderColors = {
   Beginner: "border-l-4 border-green-500",
   Intermediate: "border-l-4 border-blue-500",
   Advanced: "border-l-4 border-purple-500",
+  // Add the misspelled version as fallback
+  Beginer: "border-l-4 border-green-500",
+};
+
+export const normalizeLevelName = (level: string): string => {
+  if (level === "Beginer") return "Beginner";
+  return level;
 };

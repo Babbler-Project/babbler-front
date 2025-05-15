@@ -17,5 +17,7 @@ export const useGetSpeakerTalks = () => {
         await httpClient.get<SpeakerTalkApiResponse[]>("/speaker/talks");
       return mapApiTalksToSubmissions(data);
     },
+    staleTime: 0,
+    refetchOnMount: "always",
   });
 };
