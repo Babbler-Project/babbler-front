@@ -4,13 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, AlertCircle, CheckCircle } from "lucide-react";
-import { useRef, useState } from "react";
-import type {
-  FieldErrors,
-  FieldValues,
-  Path,
-  UseFormReturn,
-} from "react-hook-form";
+import { useState } from "react";
+import type { FieldValues, Path, UseFormReturn } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 
 interface Field<V> {
