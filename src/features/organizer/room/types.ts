@@ -11,3 +11,8 @@ export interface Room {
   name: string;
   capacity: number;
 }
+
+export interface RoomFormProps {
+  name: string;
+  capacity: number;
+}

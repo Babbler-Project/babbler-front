@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import OrganizerLayout from "./OrganizerLayout";
 import OrganizerDashboard from "../dashboard/components/OrganizerDashboard";
 import { NotFound } from "@/components/shared/navigation/not-found";
-import OrganizerSettingsPage from "../settings/components/OrganizerSettingsPage";
+import OrganizerSettingsPage from "../settings/OrganizerSettingsPage";
 
 const OrganizerRouter = () => {
   return (
