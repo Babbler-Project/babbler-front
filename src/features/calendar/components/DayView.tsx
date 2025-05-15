@@ -9,9 +9,16 @@ import type { Talk } from "../types";
 interface DayViewProps {
   currentDate: Date;
   talks: Talk[];
+  isLoading?: boolean;
+  error?: { message: string; retry: () => void };
 }
 
-export function DayView({ currentDate, talks }: DayViewProps) {
+export function DayView({
+  currentDate,
+  talks,
+  error,
+  isLoading,
+}: DayViewProps) {
   const timeSlots = useMemo(() => generateTimeSlots(), []);
 
   // Map talks for this day with positioning data
@@ -24,7 +31,7 @@ export function DayView({ currentDate, talks }: DayViewProps) {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex border-b sticky top-0 bg-background z-10">
-        {/* Empty cell for time column */}
+        {/* Time column header */}
         <div className="w-16 shrink-0 border-r p-2 text-center font-medium text-xs text-muted-foreground">
           Time
         </div>
@@ -58,6 +65,26 @@ export function DayView({ currentDate, talks }: DayViewProps) {
 
         {/* Day content */}
         <div className="flex-1 relative">
+          {/* Error message display */}
+          {error && (
+            <div className="absolute inset-0 flex items-start justify-center bg-background/80 z-10 pt-12">
+              <div className="text-red-500 p-4 bg-red-50 rounded border border-red-200">
+                {error.message}
+                <button
+                  className="ml-4 px-2 py-1 bg-red-100 rounded"
+                  onClick={error.retry}
+                >
+                  Retry
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Loading overlay */}
+          {isLoading && (
+            <div className="absolute inset-0 bg-background/30 pointer-events-none z-5" />
+          )}
+
           {/* Time slots background */}
           {timeSlots.map((slot, idx) =>
             slot.isBreakTime ? (

@@ -16,7 +16,7 @@ import { levelColors, levelBorderColors } from "../mapper";
 import { MapPin, Tag, Clock, User } from "lucide-react";
 import { useTalkDisplay } from "../hooks/useTalkDisplay";
 import { formatEventTime, formatTimeRange } from "../utils";
-import type { Talk } from "@/types/domain/Talk";
+import type { Talk } from "../types";
 
 interface TalkItemProps {
   talk: Talk;
@@ -77,7 +77,7 @@ export function TalkItem({ talk, className }: TalkItemProps) {
             </div>
             <div className="flex items-center">
               <Tag className="h-3 w-3 mr-1" />
-              <span>{talk.category}</span>
+              <span>{talk.type}</span>
             </div>
           </div>
         ) : (
@@ -131,7 +131,7 @@ export function TalkItem({ talk, className }: TalkItemProps) {
                   </div>
                   <div className="flex items-center gap-1">
                     <Tag className="h-3 w-3 opacity-70" />
-                    <span>{talk.category}</span>
+                    <span>{talk.type}</span>
                   </div>
                   <Badge
                     className={cn(

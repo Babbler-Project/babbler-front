@@ -4,8 +4,10 @@ import {
   endOfWeek,
   eachDayOfInterval,
   isSameDay,
+  startOfDay,
+  endOfDay,
 } from "date-fns";
-import type { Talk } from "../types";
+import type { CalendarViewType, Talk, TimeSlot } from "./types";
 
 export const LUNCH_BREAK_START_HOUR = 12;
 export const LUNCH_BREAK_END_HOUR = 13;
@@ -53,28 +55,25 @@ export const getTalksForDay = (talks: Talk[], day: Date): Talk[] => {
 export const calculateEventPosition = (
   startTime: string,
   endTime: string,
-  cellHeight = 120, // Augmenté de 80 à 120px pour des cellules plus hautes
+  cellHeight = 120,
   firstHour = 9,
-  minEventHeight = 100, // Hauteur minimale augmentée également
+  minEventHeight = 100,
 ): { top: number; height: number } => {
   const startDate = new Date(startTime);
   const endDate = new Date(endTime);
 
-  const startHour = startDate.getHours();
-  const endHour = endDate.getHours();
-  const startMinutes = startDate.getMinutes();
-  const endMinutes = endDate.getMinutes();
+  const startHour = startDate.getUTCHours();
+  const endHour = endDate.getUTCHours();
+  const startMinutes = startDate.getUTCMinutes();
+  const endMinutes = endDate.getUTCMinutes();
 
-  // Calculate position (assuming firstHour is the first slot)
   const top =
     (startHour - firstHour) * cellHeight + (startMinutes / 60) * cellHeight;
 
-  // Calculate raw height
   let height =
     (endHour - startHour) * cellHeight +
     ((endMinutes - startMinutes) / 60) * cellHeight;
 
-  // Apply minimum height if necessary
   height = Math.max(height, minEventHeight);
 
   return { top, height };
@@ -96,3 +95,23 @@ export function formatEventTime(dateString: string): string {
 export function formatTimeRange(startTime: string, endTime: string): string {
   return `${formatEventTime(startTime)} - ${formatEventTime(endTime)}`;
 }
+
+/**
+ * Get the start and end date for the current view
+ */
+export const getViewDateRange = (
+  date: Date,
+  viewType: CalendarViewType,
+): { startDate: Date; endDate: Date } => {
+  if (viewType === "day") {
+    return {
+      startDate: startOfDay(date),
+      endDate: endOfDay(date),
+    };
+  } else {
+    return {
+      startDate: startOfWeek(date, { weekStartsOn: 1 }), // Monday
+      endDate: endOfWeek(date, { weekStartsOn: 1 }), // Sunday
+    };
+  }
+};
