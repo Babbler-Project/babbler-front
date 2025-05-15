@@ -1,5 +1,8 @@
 import { config } from "@/config";
+import Cookies from "js-cookie";
 import type { FetchOptions } from "./types";
+
+const TOKEN_COOKIE_NAME = "babbler_auth_token";
 
 interface ApiErrorResponse {
   error: string;
@@ -25,16 +28,19 @@ const createHttpClient = () => {
       "Content-Type": "application/json",
     };
 
-    // Don't set Content-Type for FormData
+    const token = Cookies.get(TOKEN_COOKIE_NAME);
+    if (token) {
+      defaultHeaders["Authorization"] = `Bearer ${token}`;
+    }
+
     const isFormData = body instanceof FormData;
     const finalHeaders = isFormData
-      ? { ...headers } // Let browser set Content-Type with boundary
+      ? { ...headers, ...(token ? { Authorization: `Bearer ${token}` } : {}) }
       : { ...defaultHeaders, ...headers };
 
     const response = await fetch(`${config.API.BASE_URL}${endpoint}`, {
       ...options,
       headers: finalHeaders,
-      // Don't stringify FormData
       body: isFormData ? body : body ? JSON.stringify(body) : undefined,
     });
 
