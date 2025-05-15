@@ -10,6 +10,7 @@ import LoginPage from "./features/auth/components/LoginPage";
 import RegisterPage from "./features/auth/components/RegisterPage";
 import OrganizerRouter from "./features/organizer/components/OrganizerRouter";
 import SpeakerRouter from "./features/speaker/components/SpeakerRouter";
+import UserRouter from "./features/user/components/UserRouter";
 
 function App() {
   return (
@@ -62,7 +63,7 @@ function App() {
               path="/user/*"
               element={
                 <ProtectedRoute requiredRole="user">
-                  <div>User Dashboard - Coming Soon</div>
+                  <UserRouter />
                 </ProtectedRoute>
               }
             />
