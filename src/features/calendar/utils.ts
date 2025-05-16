@@ -6,6 +6,7 @@ import {
   isSameDay,
   startOfDay,
   endOfDay,
+  parseISO,
 } from "date-fns";
 import type { CalendarViewType, Talk, TimeSlot } from "./types";
 
@@ -82,11 +83,9 @@ export const calculateEventPosition = (
 /**
  * Format event time for display
  */
-export function formatEventTime(dateString: string): string {
-  return new Date(dateString).toLocaleTimeString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+export function formatEventTime(isoString: string): string {
+  const date = new Date(isoString);
+  return `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`;
 }
 
 /**
@@ -94,6 +93,14 @@ export function formatEventTime(dateString: string): string {
  */
 export function formatTimeRange(startTime: string, endTime: string): string {
   return `${formatEventTime(startTime)} - ${formatEventTime(endTime)}`;
+}
+
+/**
+ * Format full date with time
+ */
+export function formatFullDateTime(dateString: string): string {
+  const date = parseISO(dateString);
+  return `${format(date, "dd/MM/yyyy, h:mm a")} (${Intl.DateTimeFormat().resolvedOptions().timeZone})`;
 }
 
 /**
@@ -114,4 +121,30 @@ export const getViewDateRange = (
       endDate: endOfWeek(date, { weekStartsOn: 1 }), // Sunday
     };
   }
+};
+
+/**
+ * Format time in UTC without timezone conversion
+ * @param isoString ISO date string
+ * @returns Time in HH:MM format in UTC timezone
+ */
+export const formatUtcTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  return `${String(date.getUTCHours()).padStart(2, "0")}:${String(date.getUTCMinutes()).padStart(2, "0")}`;
+};
+
+/**
+ * Format date and time for display in UTC
+ * @param isoString ISO date string
+ * @returns Formatted date and time with UTC indication
+ */
+export const formatUtcDateTime = (isoString: string): string => {
+  const date = new Date(isoString);
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+
+  return `${year}-${month}-${day}, ${hours}:${minutes} UTC`;
 };

@@ -74,6 +74,15 @@ export interface SpeakerTalkApiResponse {
     createdAt: string;
     updatedAt: string;
   };
+  planning?: {
+    id: number;
+    startTime: string;
+    endTime: string;
+    room: {
+      id: number;
+      name: string;
+    };
+  };
 }
 
 export interface PlanTalkRequest {

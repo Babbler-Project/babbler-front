@@ -38,7 +38,7 @@ export function ProtectedRoute({
     const requiredRoleLower = requiredRole.toLowerCase();
 
     if (userRoleName !== requiredRoleLower) {
-      return <Navigate to="/unauthorized" replace />;
+      return <Navigate to="/signin" replace />;
     }
   }
 
